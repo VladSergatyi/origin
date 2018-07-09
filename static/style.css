@@ -2,8 +2,8 @@
   padding: 0;
   margin: 0;
 }
-#login{
-  margin-left: 22px;
+#login, #login3{
+  margin-left: 30px;
   margin-top: 20px;
   margin-bottom: 20px;
 }
@@ -15,8 +15,17 @@ form{
   background-color: #777;
   text-align: center;
 }
-#log{
+#log, #reg{
   margin-top: 20px;
   padding: 3px 10px;
   margin-bottom: 20px;
+}
+#password4{
+  margin-top: 20px;
+}
+#regisForm{
+  float: right;
+}
+#loginForm{
+  float: left;
 }
