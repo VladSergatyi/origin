@@ -18,7 +18,7 @@ module.exports = function(app, db) {
         res.send('Вы прошли авторизацию');
       }
       else {
-        res.sendFile(__dirname + '/public/index.html');
+        res.sendFile('./../public/index.html');
       }
     })
   });
