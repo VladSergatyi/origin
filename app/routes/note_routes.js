@@ -17,7 +17,7 @@ module.exports = function(app, db) {
           return console.log(err);
         }
         console.log(resul[0].login);
-        if (req.body.login == resul[0].login) {
+        if (req.body.login == resul[0].login && req.body.password == resul[0].password) {
           res.send('Вы прошли авторизацию');
         } else {
           res.sendFile(process.env.PWD + '/public/index.html');
