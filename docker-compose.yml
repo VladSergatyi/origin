@@ -1,0 +1,8 @@
+version: '2'
+
+services:
+  mongo:
+    image: mongo:3.4.10
+    container_name: vs.mongo
+    ports:
+      - 27017:27017
