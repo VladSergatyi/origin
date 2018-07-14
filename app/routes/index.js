@@ -1,5 +1,5 @@
-const noteRoutes = require('./note_routes');
+'use strict';
 module.exports = function(app, db) {
-  noteRoutes(app, db);
+  require('./note_routes')(app, db);
   // Тут, позже, будут и другие обработчики маршрутов
 };
