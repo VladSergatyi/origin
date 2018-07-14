@@ -35,7 +35,9 @@ module.exports = function(app, db) {
           res.json({ 1: 2 });
           // res.send('Вы прошли авторизацию');
         } else {
-          // заюзать .render + 
+          // заюзать .render +
+          // https://pugjs.org/api/getting-started.html
+          // https://github.com/janl/mustache.js/
           res.sendFile(process.env.PWD + '/public/index.html');
         }
       });
