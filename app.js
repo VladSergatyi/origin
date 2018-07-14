@@ -2,11 +2,17 @@ const express        = require('express');
 const MongoClient    = require('mongodb').MongoClient;
 const bodyParser     = require('body-parser');
 const db             = require('./config/db');
+const connect        = require('connect');
+const cookieParser   = require('cookie-parser');
+
 const app            = express();
 const port = 3000;
+app.use(connect.cookieParser());
+app.use(connect.session({ secret: 'your secret here'} ));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 MongoClient.connect(db.url, (err, database) => {
+
   var db = database.db('notess');
   const user = {
     login: 'admin',
