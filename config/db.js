@@ -1,4 +1,3 @@
-// контент не відповідє контексту
 module.exports = {
-  url: 'mongodb://localhost:27017/notes'
+  url: `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/notes`
 };

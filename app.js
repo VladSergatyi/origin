@@ -12,22 +12,22 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-app.use(
-  session({
-    secret: process.env.SECRET,
-    cookie: { maxAge: process.env.COOKIE_MAX_AGE },
-    store: new (require('express-sessions'))({
-      storage: 'mongodb',
-      host: process.env.MONGO_HOST,
-      port: process.env.MONGO_PORT,
-      db: 'session-express',
-      collection: 'sessions',
-      expire: 600
-    })
-  })
-);
+// app.use(
+//   session({
+//     secret: process.env.SECRET,
+//     cookie: { maxAge: process.env.COOKIE_MAX_AGE },
+//     store: new (require('express-sessions'))({
+//       storage: 'mongodb',
+//       host: process.env.MONGO_HOST,
+//       port: process.env.MONGO_PORT,
+//       db: 'session-express',
+//       collection: 'sessions',
+//       expire: 600
+//     })
+//   })
+// );
 
-// require('./app/routes')(app);
+require('./app/routes')(app);
 
 app.listen(port, () => {
   console.log('We are live on ' + port);

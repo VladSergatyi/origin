@@ -1,4 +1,10 @@
-const noteRoutes = require('./note_routes');
-module.exports = function(app, db, validator, user) {
-  noteRoutes(app, db, validator, user);
+'use strict';
+module.exports = app => {
+  require('./note_routes')(app);
+
+  //TODO на домашку - ерор хендлінг
+  app.use(function(err, req, res, next) {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
+  });
 };
