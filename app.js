@@ -6,7 +6,7 @@ const admin = require('./config/mongoose');
 const user = require('./config/mongoose');
 const validator = require('validator');
 
-const  dotenv  =  require ('dotenv').config({path: '/base.env'});
+const dotenv = require('dotenv').config({ path: '/base.env' });
 // заінітить dotenv з важливими енвайрмент змінними
 // https://github.com/motdotla/dotenv
 
@@ -15,8 +15,8 @@ const port = 3000;
 
 app.set('trust proxy', 1); // trust first proxy
 
-app.set('views', __dirname + '/views')
-app.set('view engine', 'ejs')
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
@@ -37,10 +37,9 @@ app.use(express.static('public'));
 );*/
 // use mongoose і винести в окремий модуль++
 
-    // ++переписать щоб виконати послідовність дій: remove, then insert
+// ++переписать щоб виконати послідовність дій: remove, then insert
 
-
-        require('./app/routes')(app, admin, validator, user);
-        app.listen(port, () => {
-          console.log('We are live on ' + port);
-        });
+require('./app/routes')(app, admin, validator, user);
+app.listen(port, () => {
+  console.log('We are live on ' + port);
+});
