@@ -2,19 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Page</title>
+  <title><%= title %></title>
   <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
   <div class="container">
-  <form action="/login" method="post">
+  <form action="/logup" method="post">
+    <% if (error==1) {%>
+     <p><%=errorContent%></p>
+  <%}%>
+
     <label for="log">Login</label>
     <input type="text" id="log" name="login">
     <br>
     <label for="pass">Password</label>
     <input type="password" id="pass" name="password">
     <br>
-    <button type="submit" name="button" id="submit">Log In</button>
+    <label for="pass2">Password</label>
+    <input type="password" id="pass2" name="password2">
+    <br>
+    <button type="submit" name="button" id="submit">Log Up</button>
   </form>
   </div>
 </body>
