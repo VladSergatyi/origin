@@ -1,54 +1,92 @@
 // ізбавитись від app,db , заюзать http://expressjs.com/ru/4x/api.html#router
-module.exports = function(app, db) {
-  app.post('/notes', (req, res) => {
-    const note = { text: req.body.body, title: req.body.title };
-    db.collection('notes').insert(note, (err, result) => {
-      if (err) {
-        res.send({ error: 'An error has occurred' });
-      } else {
-        res.send(result.ops[0]);
-      }
-    });
-  });
+'use strict';
 
+const Validator = require('./../libs/Validator');
+
+module.exports = app => {
   app.post('/login', (req, res) => {
     const { login, password } = req.body;
 
-    // написать валідацію вхідних даних
-    // логін - мін 3 символа, пароль мінімум 6, всі поля обовязкові
-    // https://github.com/skaterdav85/validatorjs
-    // або https://validatejs.org/
+    const validate = new Validator(
+      { login, password },
+      {
+        login: 'required|in:admin',
+        password: 'required|in:123456'
+      }
+    );
 
-    db.collection('users')
-      .find() // тільки пошук по логіну ({login: login})
-      // пошук лише одного запису (limit: 1)
-      .toArray((err, result) => {
-        if (err) {
-          // повернути помилку
-          return console.log(err);
-        }
-        // прибрати []
-        if (login === result[0].login && password === String(result[0].password)) {
-          // req.session.username = result[0]._id; // primary idx
-          req.session.user = result[0]._id;
-          // редірект на /cabinet
-          res.json({ 1: 2 });
-          // res.send('Вы прошли авторизацию');
-        } else {
-          // заюзать .render +
-          // https://pugjs.org/api/getting-started.html
-          // https://github.com/janl/mustache.js/
-          res.sendFile(process.env.PWD + '/public/index.html');
-        }
-      });
+    const objectDataPage = {
+      title: 'Login page',
+      errors: []
+    };
+
+    validate.fails(function() {
+      objectDataPage.title = 'Error';
+      objectDataPage.errors = validate.errors.all();
+      res.render('pages/auth/login', objectDataPage);
+    });
+
+    validate.passes(function() {
+      res.render('pages/auth/login', objectDataPage);
+    });
   });
 
-  app.get('/cabinet', (req, res) => {
-    res.json({ sess: req.session.user });
+  app.get('/logup', (req, res) => {
+    res.render('pages/logup', {
+      title: 'Log Up',
+      error: 0
+    });
   });
+  app.post('/logup', (req, res, next) => {
+    let j = 0;
+    const { login, password, password2 } = req.body;
 
+    // пошук по логіну в бд (count)
+    user.find().count(function(err, count) {
+      throw new Error('user exist');
+
+      if (err) next(err);
+      if (
+        // переписать під валідатор
+        validator.isLength(login, { min: 3, max: undefined }) == true &&
+        validator.isLength(password, { min: 6, max: undefined }) == true &&
+        validator.isLength(password2, { min: 6, max: undefined }) == true &&
+        password === password2
+      ) {
+        users.forEach(userNumber => {
+          if (login == userNumber.login) {
+            console.log(123);
+            j++;
+            res.render('pages/logup', {
+              title: 'Log Up',
+              error: 1,
+              errorContent: 'Пользователь с таким логилом уже зарегистрирован!'
+            });
+          }
+        });
+        if (j == 0) {
+          var person = new user({
+            login: login,
+            password: password
+          });
+          person.save(err => {
+            if (err) throw err;
+          });
+          console.log(person);
+          res.send('ok');
+        }
+      } else {
+        res.render('pages/logup', {
+          title: 'Log Up',
+          error: 0
+        });
+      }
+    });
+  });
   // розібратись  з індексною сторінкою
   app.get('/', (req, res) => {
-    res.sendFile('index.html');
+    res.render('pages/home', {
+      title: 'Home page'
+    });
   });
 };
