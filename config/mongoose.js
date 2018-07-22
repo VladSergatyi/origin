@@ -1,24 +1,17 @@
 const mongoose = require('mongoose');
-// TODO:: переписати під process.env
-mongoose.connect(
-  'mongodb://localhost/mongoose_basics',
-  function(err) {
-    console.log("can't connect to db, err:" + err.message);
-    process.exit(1);
-  }
-);
+mongoose.connect('mongodb://localhost/mongoose_basics', function (err) {
+   if (err) throw err;
+});
 var user = mongoose.model('user', {
   login: String,
-  password: String
+  password: String});
+var admin = new user({
+  login: 'admin',
+  password: '123456'
 });
-// // забрати всі var -> let, const
-// var admin = new user({
-//   login: 'admin',
-//   password: '123456'
-// });
-// user.find().exec(function(err, books) {
-//   if (err) throw err;
-//   console.log(books);
-// });
-
-module.exports = { user };
+user.find().exec(function(err, books) {
+        if (err) throw err;
+      
+    });
+module.exports = admin;
+module.exports = user;
