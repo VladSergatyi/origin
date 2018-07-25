@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CreateNotes</title>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Create new note</h1>
+  <form action="/createNote" method="post">
+    <% if (errors) {%>
+     <p><%=errors%></p>
+    <%}%>
+    <label for="log">Title</label>
+    <input type="text" id="log" name="title">
+    <br>
+    <label for="pass">Content</label>
+    <input type="text" id="pass" name="content">
+    <br>
+    <button type="submit" name="button" id="submit">Create</button>
+  </form>
+  </div>
+</body>
+</html>

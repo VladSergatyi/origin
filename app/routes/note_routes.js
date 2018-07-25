@@ -1,17 +1,47 @@
 // ізбавитись від app,db , заюзать http://expressjs.com/ru/4x/api.html#router
 'use strict';
-const user = require('./../../config/mongoose');
 const Validator = require('./../libs/Validator');
-
+const mongoose = require('./../../config/mongoose');
 module.exports = app => {
+  let note = mongoose.note;
+  let user = mongoose.user;
   const objectDataPage = {
     title: '',
     errors: []
   };
+  app.get('/listNote', (req, res) => {
+    note.find().exec((err, result) => {
+      res.json(result);
+    })
+
+  });
+  app.get('/createNote', (req, res) => {
+    res.render('pages/create', objectDataPage);
+  });
+  app.post('/createNote', (req, res) => {
+    if (req.session.user != undefined) {
+    let newNote = new note({
+      title: req.body.title,
+      content: req.body.content
+    });
+    newNote.save((err) => {
+      note.find().exec((err, result) => {
+        res.json(result);
+      })
+    })
+  }
+  else {
+    objectDataPage.title = 'Log in';
+    objectDataPage.errors = 'Что бы создать заметку нужно авторизоваться.';
+    res.render('pages/login', objectDataPage);
+  }
+  });
   // LOGIN Block
   app.get('/login', (req, res) => {
     res.render('pages/login', {title:"Log In", errors:[]});
+    console.log(req.session.user);
   });
+
   app.post('/login', (req, res) => {
     const { login, password } = req.body;
 
@@ -28,10 +58,15 @@ module.exports = app => {
       res.render('pages/login', objectDataPage);
     });
     validate.passes( () => {
-      user.find({login:login, password: password}).count((err, count) => {
+      user.find({login:login, password: password}, (err, user) => {
         if (err) next(err);
-        if (count > 0) {
-          res.send('Welcome');
+        if (user.length > 0) {
+          console.log(user[0]._id);
+
+          req.session.user = user[0]._id;
+          res.render('pages/create', objectDataPage);
+
+          console.log(req.session.user);
         }
         else
         {
