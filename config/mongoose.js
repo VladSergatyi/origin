@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/mongoose_basics', function (err) {
    if (err) throw err;
 });
+
 let user = mongoose.model('user', {
   login: String,
   password: String});
@@ -16,3 +17,4 @@ let note = mongoose.model('note', {
 
 exports.note = note;
 exports.user = user;
+
