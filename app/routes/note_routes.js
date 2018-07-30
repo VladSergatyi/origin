@@ -1,14 +1,22 @@
 // ізбавитись від app,db , заюзать http://expressjs.com/ru/4x/api.html#router
 'use strict';
+
 const Validator = require('./../libs/Validator');
 const mongoose = require('./../../config/mongoose');
 module.exports = app => {
 
+<<<<<<< HEAD
   let {user, note} = require("./../../config/mongoose")
+=======
+  let note = mongoose.note;
+  let user = mongoose.user;
+
+>>>>>>> fbbf9d0eb36365e6c7a4345fca9fc4cc6182e210
   const objectDataPage = {
     title: '',
     errors: []
   };
+
   app.get('/listNote', (req, res) => {
     note.find().exec((err, result) => {
       if (err) next(err)
@@ -60,7 +68,12 @@ module.exports = app => {
       res.render('pages/login', objectDataPage);
     });
     validate.passes( () => {
+<<<<<<< HEAD
       user.findOne({login:login, password: password}, (err, user) => {
+=======
+
+      user.find({login:login, password: password}, (err, user) => {
+>>>>>>> fbbf9d0eb36365e6c7a4345fca9fc4cc6182e210
         if (err) next(err);
         if (user) {
           console.log(user._id);
@@ -69,6 +82,7 @@ module.exports = app => {
           res.render('pages/create', objectDataPage);
 
           console.log(req.session.user);
+
         }
         else
         {
@@ -78,11 +92,13 @@ module.exports = app => {
         }
       });
     });
+
   });
 // SIGNUP Block
   app.get('/signup', (req, res) => {
       res.render('pages/signup', {title:"Sign Up", errors:[]});
   });
+
   app.post('/signup', (req, res, next) => {
     const { login, password, password2 } = req.body;
     const validate = new Validator(
