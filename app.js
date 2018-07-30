@@ -12,20 +12,21 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-// app.use(
-//   session({
-//     secret: process.env.SECRET,
-//     cookie: { maxAge: process.env.COOKIE_MAX_AGE },
-//     store: new (require('express-sessions'))({
-//       storage: 'mongodb',
-//       host: process.env.MONGO_HOST,
-//       port: process.env.MONGO_PORT,
-//       db: 'session-express',
-//       collection: 'sessions',
-//       expire: 600
-//     })
-//   })
-// );
+ app.use(
+   session({
+  secret: 'Q=EQ9d>ScF=?8.=]',
+    cookie: { maxAge: 60000 },
+    store: new (require('express-sessions'))({
+      storage: 'mongodb',
+      // взяти дані з .env
+      host: 'localhost',
+      port: 27017,
+      db: 'session-express',
+      collection: 'sessions',
+      expire: 86400
+     })
+   })
+ );
 
 require('./app/routes')(app);
 

@@ -1,17 +1,53 @@
 // ізбавитись від app,db , заюзать http://expressjs.com/ru/4x/api.html#router
 'use strict';
-const user = require('./../../config/mongoose');
-const Validator = require('./../libs/Validator');
 
+const Validator = require('./../libs/Validator');
+const mongoose = require('./../../config/mongoose');
 module.exports = app => {
+
+
+  let {user, note} = require("./../../config/mongoose")
+
   const objectDataPage = {
     title: '',
     errors: []
   };
+
+  app.get('/listNote', (req, res) => {
+    note.find().exec((err, result) => {
+      if (err) next(err)
+      res.json(result);
+    })
+
+  });
+  app.get('/createNote', (req, res) => {
+    res.render('pages/create', objectDataPage);
+  });
+  app.post('/createNote', (req, res) => {
+    if (req.session.user != undefined) {
+    let newNote = new note({
+      title: req.body.title,
+      content: req.body.content
+    });
+    newNote.save(() => {
+      note.find().exec((err, result) => {
+        if (err) next(err)
+        res.json(result);
+      })
+    })
+  }
+  else {
+    objectDataPage.title = 'Log in';
+    objectDataPage.errors = 'Что бы создать заметку нужно авторизоваться.';
+    res.render('pages/login', objectDataPage);
+  }
+  });
   // LOGIN Block
   app.get('/login', (req, res) => {
     res.render('pages/login', {title:"Log In", errors:[]});
+    console.log(req.session.user);
   });
+
   app.post('/login', (req, res) => {
     const { login, password } = req.body;
 
@@ -28,10 +64,18 @@ module.exports = app => {
       res.render('pages/login', objectDataPage);
     });
     validate.passes( () => {
-      user.find({login:login, password: password}).count((err, count) => {
+
+      user.findOne({login:login, password: password}, (err, user) => {
+
         if (err) next(err);
-        if (count > 0) {
-          res.send('Welcome');
+        if (user) {
+          console.log(user._id);
+
+          req.session.user = user._id;
+          res.render('pages/create', objectDataPage);
+
+          console.log(req.session.user);
+
         }
         else
         {
@@ -41,11 +85,13 @@ module.exports = app => {
         }
       });
     });
+
   });
 // SIGNUP Block
   app.get('/signup', (req, res) => {
       res.render('pages/signup', {title:"Sign Up", errors:[]});
   });
+
   app.post('/signup', (req, res, next) => {
     const { login, password, password2 } = req.body;
     const validate = new Validator(
