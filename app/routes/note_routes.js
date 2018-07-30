@@ -3,14 +3,15 @@
 const Validator = require('./../libs/Validator');
 const mongoose = require('./../../config/mongoose');
 module.exports = app => {
-  let note = mongoose.note;
-  let user = mongoose.user;
+
+  let {user, note} = require("./../../config/mongoose")
   const objectDataPage = {
     title: '',
     errors: []
   };
   app.get('/listNote', (req, res) => {
     note.find().exec((err, result) => {
+      if (err) next(err)
       res.json(result);
     })
 
@@ -24,8 +25,9 @@ module.exports = app => {
       title: req.body.title,
       content: req.body.content
     });
-    newNote.save((err) => {
+    newNote.save(() => {
       note.find().exec((err, result) => {
+        if (err) next(err)
         res.json(result);
       })
     })
@@ -58,12 +60,12 @@ module.exports = app => {
       res.render('pages/login', objectDataPage);
     });
     validate.passes( () => {
-      user.find({login:login, password: password}, (err, user) => {
+      user.findOne({login:login, password: password}, (err, user) => {
         if (err) next(err);
-        if (user.length > 0) {
-          console.log(user[0]._id);
+        if (user) {
+          console.log(user._id);
 
-          req.session.user = user[0]._id;
+          req.session.user = user._id;
           res.render('pages/create', objectDataPage);
 
           console.log(req.session.user);

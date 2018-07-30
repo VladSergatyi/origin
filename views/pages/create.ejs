@@ -9,9 +9,7 @@
   <div class="container">
     <h1>Create new note</h1>
   <form action="/createNote" method="post">
-    <% if (errors) {%>
-     <p><%=errors%></p>
-    <%}%>
+    
     <label for="log">Title</label>
     <input type="text" id="log" name="title">
     <br>
