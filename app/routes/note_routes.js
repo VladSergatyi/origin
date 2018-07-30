@@ -5,13 +5,9 @@ const Validator = require('./../libs/Validator');
 const mongoose = require('./../../config/mongoose');
 module.exports = app => {
 
-<<<<<<< HEAD
-  let {user, note} = require("./../../config/mongoose")
-=======
-  let note = mongoose.note;
-  let user = mongoose.user;
 
->>>>>>> fbbf9d0eb36365e6c7a4345fca9fc4cc6182e210
+  let {user, note} = require("./../../config/mongoose")
+
   const objectDataPage = {
     title: '',
     errors: []
@@ -68,12 +64,9 @@ module.exports = app => {
       res.render('pages/login', objectDataPage);
     });
     validate.passes( () => {
-<<<<<<< HEAD
-      user.findOne({login:login, password: password}, (err, user) => {
-=======
 
-      user.find({login:login, password: password}, (err, user) => {
->>>>>>> fbbf9d0eb36365e6c7a4345fca9fc4cc6182e210
+      user.findOne({login:login, password: password}, (err, user) => {
+
         if (err) next(err);
         if (user) {
           console.log(user._id);
