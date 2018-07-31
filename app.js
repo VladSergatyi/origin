@@ -4,8 +4,8 @@ const bodyParser = require('body-parser');
 require('dotenv').config();
 
 const app = express();
-const port = 3000;
-
+const port = 4000;
+module.exports = app;
 app.set('trust proxy', 1); // trust first proxy
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
